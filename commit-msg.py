@@ -6,8 +6,6 @@ import re
 import codecs
 
 msg_file = sys.argv[1]
-#msg_file = "README.md"
-
 
 branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
 brs = re.search("-(.*?)$", branches.strip("\n"))
@@ -32,20 +30,3 @@ begin_tag = '[' + ', '.join(final_pids) + ']'
 print(begin_tag, file=f)
 print(all, file=f)
 f.close()
-
-
-
-
-
-# if [ "$ManualMessagePivotalID" == "" ] ; then
-#
-#         if [ $Branch == "master" ] ; then
-#         echo ""
-#         else
-#                 StoryNo="$(echo $Branch | sed -e "s/^.*-\([0-9]*\)$/\1/g")"
-#         mv $1 $1.tmp-msg
-#         echo "[#$StoryNo]" > $1
-#         cat $1.tmp-msg >> $1
-#                 echo "$PivotalTrackerURL/$StoryNo" >> $1
-#         fi
-# fi
