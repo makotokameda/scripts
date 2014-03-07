@@ -25,10 +25,7 @@ for piv_id in pivStory_ids:
         final_pids.append('#' + piv_id)
 
 f = codecs.open(msg_file, "w", "utf-8")
-all = f.read()
-f.flush()
 print(final_pids, file=f)
-print(all, file=f)
 f.close()
 
 
