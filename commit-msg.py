@@ -29,7 +29,6 @@ f = codecs.open(msg_file, "r+", "utf-8")
 f.seek(0)
 begin_tag = '[' + ', '.join(final_pids) + ']'
 print(begin_tag, file = f)
-print(all, file=f)
 f.close()
 
 
