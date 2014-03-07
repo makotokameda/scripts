@@ -3,15 +3,16 @@ import subprocess
 import re
 
 branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
-a = re.search("-(.*?)$",  branches.strip("\n"))
-pivStoryIDs = a.group(1).split("-")
-pivURL="https://www.pivotaltracker.com/story/show"
+a = re.match("-(.*?)$", branches.strip("\n"))
+pivStoryIDs = a.group(1).split(".")
+pivURL = "https://www.pivotaltracker.com/story/show"
 
+p = re.compile("[0-9]*")
 for pivID in pivStoryIDs:
-    if(re.match("[0-9]*", pivID) == true)
+    m = p.match(pivID)
+    if m.group() != None:
+        print(m.group())
 
-
-    print(pivID)
 
 # if [ "$ManualMessagePivotalID" == "" ] ; then
 #
