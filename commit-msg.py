@@ -24,6 +24,7 @@ for piv_id in pivStory_ids:
     if m != None:
         final_pids.append('#' + piv_id)
 
+
 f = codecs.open(msg_file, "w+", "utf-8")
 all = f.read()
 begin_tag = '[' + ', '.join(final_pids) + ']'
