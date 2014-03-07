@@ -26,7 +26,9 @@ for piv_id in pivStory_ids:
 
 f = codecs.open(msg_file, "r+", "utf-8")
 all = f.read()
-print(', '.join(final_pids), file=f)
+f.flush()
+begin_tag = '[' + ', '.join(final_pids) + ']'
+print(begin_tag, file = f)
 print(all, file=f)
 f.close()
 
