@@ -5,30 +5,43 @@ import subprocess
 import re
 import codecs
 
+
+class CommitMessageAppender(object):
+    __msg_file = ""
+    __piv_url = "https://www.pivotaltracker.com/story/show/"
+    __final_pids = []
+    __final_urls = []
+
+    def __init__(self, msg_file):
+        self.__msg_file = msg_file
+
+    def find_piv_story_ids(self, msg_file):
+        branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
+        brs = re.search("-(.*?)$", branches.strip("\n"))
+        if brs == None:
+            exit()
+        self.set_piv_story(brs)
+
+    def set_piv_story(self, brs):
+        piv_story_ids = brs.group(1).split(",")
+        pid_f = re.compile("[0-9]*")
+        for piv_id in piv_story_ids:
+            m = pid_f.match(piv_id)
+            if m != None:
+                self.__final_pids.append('#' + piv_id)
+                self.__final_urls.append(self.__piv_url + piv_id)
+
+    def append(self):
+        f = codecs.open(self.__msg_file, "r+", "utf-8")
+        contents = f.read()
+        begin_tag = '[' + ', '.join(self.__final_pids) + ']'
+        urls = '\n'.join(self.__final_urls)
+        f.seek(0)
+        print(begin_tag + contents + urls, file=f)
+        f.close()
+
+
 msg_file = sys.argv[1]
+appender = CommitMessageAppender(msg_file)
+appender.append()
 
-branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
-brs = re.search("-(.*?)$", branches.strip("\n"))
-if brs == None:
-    exit()
-pivStory_ids = brs.group(1).split(",")
-
-piv_url = "https://www.pivotaltracker.com/story/show/"
-
-final_pids = []
-final_urls = []
-pid_f = re.compile("[0-9]*")
-for piv_id in pivStory_ids:
-    m = pid_f.match(piv_id)
-    if m != None:
-        final_pids.append('#' + piv_id)
-        final_urls.append(piv_url + piv_id)
-
-
-f = codecs.open(msg_file, "r+", "utf-8")
-all = f.read()
-begin_tag = '[' + ', '.join(final_pids) + ']'
-urls = '\n'.join(final_urls)
-f.seek(0)
-print(begin_tag + all + urls, file=f)
-f.close()
