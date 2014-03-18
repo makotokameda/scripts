@@ -15,7 +15,8 @@ class CommitMessageAppender(object):
     def __init__(self, msg_file):
         self.__msg_file = msg_file
 
-    def find_piv_story_ids(self, msg_file):
+
+    def find_piv_story_ids(self):
         branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
         brs = re.search("-(.*?)$", branches.strip("\n"))
         if brs == None:
@@ -32,6 +33,7 @@ class CommitMessageAppender(object):
                 self.__final_urls.append(self.__piv_url + piv_id)
 
     def append(self):
+        self.find_piv_story_ids()
         f = codecs.open(self.__msg_file, "r+", "utf-8")
         contents = f.read()
         begin_tag = '[' + ', '.join(self.__final_pids) + ']'
