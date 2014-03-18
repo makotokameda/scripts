@@ -30,9 +30,5 @@ all = f.read()
 begin_tag = '[' + ', '.join(final_pids) + ']'
 urls = '\n'.join(final_urls)
 f.seek(0)
-print(begin_tag, file=f)
-print(all, file=f)
-print(urls, file=f)
+print(begin_tag + all + urls, file=f)
 f.close()
-
-# END
