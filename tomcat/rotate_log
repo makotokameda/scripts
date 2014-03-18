@@ -1,0 +1,17 @@
+LOG_DIR=/usr/local/tomcat/logs/
+
+lzmafiles=`find ${LOG_DIR} -mmin +1440 -regex ".*\.\(log\|txt\)$" -printf "%p "`
+if [ "$lzmafiles" != "" ] ; then
+    lzma ${lzmafiles}
+fi
+
+delfiles=`find ${LOG_DIR} -mmin +43200 -printf "%p "`
+if [ "$delfiles" != "" ] ; then
+    rm ${delfiles}
+fi
+
+LOG_DIR=/var/log/jenkins/
+delfiles=`find ${LOG_DIR} -mmin +43200 -printf "%p "`
+if [ "$delfiles" != "" ] ; then
+    rm ${delfiles}
+fi
