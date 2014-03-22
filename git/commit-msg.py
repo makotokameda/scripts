@@ -6,15 +6,13 @@ import re
 import codecs
 
 
-class CommitMessageAppender(object):
-    __msg_file = ""
-    __piv_url = "https://www.pivotaltracker.com/story/show/"
-    __final_pids = []
-    __final_urls = []
-
+class PivCommitMessageAppender(object):
     def __init__(self, msg_file):
         self.__msg_file = msg_file
-
+        self.__msg_file = ""
+        self.__piv_url = "https://www.pivotaltracker.com/story/show/"
+        self.__final_pids = []
+        self.__final_urls = []
 
     def find_piv_story_ids(self):
         branches = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], universal_newlines=True)
@@ -44,6 +42,6 @@ class CommitMessageAppender(object):
 
 
 msg_file = sys.argv[1]
-appender = CommitMessageAppender(msg_file)
+appender = PivCommitMessageAppender(msg_file)
 appender.append()
 
