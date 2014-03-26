@@ -33,6 +33,7 @@ class Archiver(object):
             f = tarfile.open(self.files_dir + archive + ".tar.bz2", "w:bz2")
             f.add(self.files_dir + archive, arcname=archive)
             f.close()
+            os.remove(self.files_dir + archive)
 
         for old_f in self.old_files:
             os.remove(self.files_dir + old_f)
